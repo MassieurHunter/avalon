@@ -111,6 +111,11 @@ class Ajax extends MY_Controller
 	 */
 	private function gameCreate(): array {
 
+	    $withMordred = $this->input->post('mordred');
+	    $withOberon = $this->input->post('oberon');
+	    $withPerceval = $this->input->post('perceval');
+	    $withMorgana = $this->input->post('morgana');
+
 		$this->load->model('game_model', 'game');
 		$this->game
 			->generateCode()

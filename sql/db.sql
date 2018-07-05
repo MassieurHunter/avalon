@@ -1,11 +1,12 @@
 DROP TABLE IF EXISTS `games`;
 CREATE TABLE `games` (
-  `gameUid`    int(11) NOT NULL AUTO_INCREMENT,
-  `code`       varchar(10)      DEFAULT NULL,
-  `maxPlayers` int              DEFAULT '10',
-  `nbPlayers`  int              DEFAULT '0',
-  `started`    tinyint(1)       DEFAULT '0',
-  `finished`   tinyint(1)       DEFAULT '0',
+  `gameUid`         int(11) NOT NULL AUTO_INCREMENT,
+  `code`            varchar(10)      DEFAULT NULL,
+  `maxPlayers`      int              DEFAULT '10',
+  `nbPlayers`       int              DEFAULT '0',
+  `nbRefusedTeams`  int              DEFAULT '0',
+  `started`         tinyint(1)       DEFAULT '0',
+  `finished`        tinyint(1)       DEFAULT '0',
   PRIMARY KEY (`gameUid`)
 )
   ENGINE = InnoDB
