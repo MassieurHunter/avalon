@@ -1,0 +1,13 @@
+.idea/
+nbproject/
+.DS_Store
+node_modules/
+public/css/*
+!public/css/index.html
+public/js/*
+!public/js/index.html
+app/node-dist
+app/views/cache/*
+!app/views/cache/index.html
+!app/views/cache/.htaccess
+/vendor/
