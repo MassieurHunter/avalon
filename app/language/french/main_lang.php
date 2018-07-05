@@ -1,5 +1,5 @@
 <?php
-$lang['title'] = "Loup Garou";
+$lang['title'] = "Avalon";
 $lang['change_theme'] = "Thème";
 $lang['theme_default'] = "Défaut";
 

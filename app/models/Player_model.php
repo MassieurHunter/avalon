@@ -488,29 +488,35 @@ class Player_model extends MY_Model
 
     /**
      * @param int $gameUid
+     * @param int $quest
      * @param int $teamUid
+     * @param bool $success
      */
-    public function voteForTeam(int $gameUid, int $teamUid) {
+    public function voteForTeam(int $gameUid, int $quest, int $teamUid, bool $success) {
 
         $this->load->model('votes/voteteam_model', 'newVoteTeam');
         $this->newVoteTeam
             ->setGameUid($gameUid)
             ->setPlayerUid($this->getPlayerUid())
+            ->setQuest($quest)
             ->setTeamUid($teamUid)
+            ->setSuccess((int) $success)
             ->create();
     }
 
     /**
      * @param int $gameUid
      * @param int $quest
+     * @param bool $success
      */
-    public function voteForQuest(int $gameUid, int $quest) {
+    public function voteForQuest(int $gameUid, int $quest, bool $success) {
 
         $this->load->model('votes/votequest_model', 'newVoteQuest');
         $this->newVoteQuest
             ->setGameUid($gameUid)
             ->setPlayerUid($this->getPlayerUid())
             ->setQuest($quest)
+            ->setSuccess((int) $success)
             ->create();
     }
 

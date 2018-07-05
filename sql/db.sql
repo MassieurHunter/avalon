@@ -67,7 +67,7 @@ INSERT INTO `roles` VALUES
 (5, 'Assassin', "Si les gentils réussissent 3 quêtes, l'assasin peut essayer de tuer Merlin pour faire gagner les méchants" , 'assassin', 1, 0),
 (6, 'Mordred', 'Mordered est un méchant inconnu de Merlin', 'mordred', 1, 0),
 (7, 'Morgane', 'Morgane se fait passer pour Merlin aux yeux de Perceval, si Spruello est Perceval, ça peut être très amusant', 'morgana', 1, 0),
-(8, 'Oberon', 'Oberon est un méchant qui ne connait', 'oberon', 1, 0),
+(8, 'Oberon', 'Oberon est un méchant qui ne connait pas ses aliers, et ses aliers ne le connaissent pas non plus', 'oberon', 1, 0),
 
 
 DROP TABLE IF EXISTS `teams`;
@@ -90,6 +90,7 @@ CREATE TABLE `votes_teams` (
   `voteUid`   int(11) NOT NULL AUTO_INCREMENT,
   `gameUid`   int(11)        DEFAULT NULL,
   `playerUid` int(11)        DEFAULT NULL,
+  `quest` tinyint(1)          DEFAULT NULL,
   `teamUid` int(11)          DEFAULT NULL,
   `success` tinyint(1)       DEFAULT NULL,
   PRIMARY KEY (`voteUid`)

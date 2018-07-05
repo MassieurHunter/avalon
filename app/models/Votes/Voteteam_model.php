@@ -24,6 +24,10 @@ class Voteteam_model extends MY_Model
 	 * @var int
 	 */
 	protected $playerUid;
+    /**
+     * @var int
+     */
+    protected $quest;
 	/**
 	 * @var int
 	 */
@@ -101,6 +105,22 @@ class Voteteam_model extends MY_Model
 		$this->playerUid = $playerUid;
 		return $this;
 	}
+
+    /**
+     * @return int
+     */
+    public function getQuest(): int {
+        return (int)$this->quest;
+    }
+
+    /**
+     * @param int $quest
+     * @return Voteteam_model
+     */
+    public function setQuest($quest): Voteteam_model {
+        $this->quest = $quest;
+        return $this;
+    }
 
 	/**
 	 * @return int

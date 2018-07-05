@@ -5,21 +5,21 @@
  *
  * @property Player_model $_playerModel
  * @property Role_model $_roleModel
- * @property Log_model $_logModel
  * @property History_model $_history
+ * @property Votequest_model $_voteQuest
+ * @property Voteteam_model $_voteTeam
  */
 class Game_model extends MY_Model
 {
+    const MAX_REFUSED_TEAMS = 5;
     /**
      * @var string
      */
     public $table = 'games';
-
     /**
      * @var string
      */
     public $primary_key = 'gameUid';
-
     /**
      * @var string
      */
@@ -33,7 +33,7 @@ class Game_model extends MY_Model
         'nbPlayers'  => 'getNbPlayers',
         'started'    => 'isStarted',
         'finished'   => 'isFinished',
-        'players'    => 'getRealPlayersWithBasicInfos',
+        'players'    => 'getPlayersWithBasicInfos',
     ];
     /**
      * @var array
@@ -45,7 +45,8 @@ class Game_model extends MY_Model
         'started'         => 'isStarted',
         'finished'        => 'isFinished',
         'rolesForCasting' => 'getRolesForCastingWithBasicInfos',
-        'players'         => 'getRealPlayersWithBasicInfos',
+        'nbRefusedTeams'  => 'getNbRefusedTeams',
+        'players'         => 'getPlayersWithBasicInfos',
     ];
     /**
      * @var int
@@ -80,10 +81,6 @@ class Game_model extends MY_Model
      */
     protected $arrRoles = [];
     /**
-     * @var Log_model[]
-     */
-    protected $arrLogs = [];
-    /**
      * @var array
      */
     protected $arrVotesForTeams = [];
@@ -91,7 +88,6 @@ class Game_model extends MY_Model
      * @var array
      */
     protected $arrVotesForQuests = [];
-
     /**
      * @var int
      */
@@ -100,7 +96,6 @@ class Game_model extends MY_Model
      * @var History_model[]
      */
     protected $arrHistories = [];
-
     /**
      * @var bool
      */
@@ -117,11 +112,6 @@ class Game_model extends MY_Model
      * @var bool
      */
     protected $withMordred = false;
-
-
-    const MAX_REFUSED_TEAMS = 5;
-
-
 
     /**
      * @return string
@@ -192,7 +182,6 @@ class Game_model extends MY_Model
         $this->nbRefusedTeams = $nbRefusedTeams;
         return $this;
     }
-
 
 
     /**
@@ -363,16 +352,6 @@ class Game_model extends MY_Model
                 $nbEvils = 4;
                 break;
 
-            case 11 :
-                $nbGoods = 7;
-                $nbEvils = 4;
-                break;
-
-            case 12 :
-                $nbGoods = 7;
-                $nbEvils = 5;
-                break;
-
             default:
                 $nbGoods = 0;
                 $nbEvils = 0;
@@ -516,6 +495,101 @@ class Game_model extends MY_Model
     public function setGameUid(int $gameUid): Game_model {
         $this->gameUid = $gameUid;
         return $this;
+    }
+
+    /**
+     * @param int $quest
+     * @return int
+     */
+    public function getTeamSizeForQuest(int $quest): int {
+
+        $arrTeamsSizes = $this->getTeamsSizes();
+
+        return $arrTeamsSizes[$quest];
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeamsSizes(): array {
+
+        switch ($this->getNbPlayers()) {
+
+            case 5 :
+                $arrTeamsSize = [
+                    1 => 2,
+                    2 => 3,
+                    3 => 2,
+                    4 => 3,
+                    5 => 3,
+                ];
+                break;
+
+            case 6 :
+                $arrTeamsSize = [
+                    1 => 2,
+                    2 => 3,
+                    3 => 4,
+                    4 => 3,
+                    5 => 4,
+                ];
+                break;
+
+            case 7 :
+                $arrTeamsSize = [
+                    1 => 2,
+                    2 => 3,
+                    3 => 3,
+                    4 => 4,
+                    5 => 4,
+                ];
+                break;
+
+            case 8 :
+                $arrTeamsSize = [
+                    1 => 3,
+                    2 => 4,
+                    3 => 4,
+                    4 => 5,
+                    5 => 5,
+                ];
+                break;
+
+            case 9 :
+                $arrTeamsSize = [
+                    1 => 3,
+                    2 => 4,
+                    3 => 4,
+                    4 => 5,
+                    5 => 5,
+                ];
+                break;
+
+            case 10 :
+                $arrTeamsSize = [
+                    1 => 3,
+                    2 => 4,
+                    3 => 4,
+                    4 => 5,
+                    5 => 5,
+                ];
+                break;
+
+            default:
+                $arrTeamsSize = [
+                    1 => 2,
+                    2 => 3,
+                    3 => 2,
+                    4 => 3,
+                    5 => 3,
+                ];
+                break;
+
+        }
+
+        return $arrTeamsSize;
+
     }
 
     /**
@@ -726,13 +800,6 @@ class Game_model extends MY_Model
     }
 
     /**
-     *
-     */
-    public function initVotesForQuests() {
-
-    }
-
-    /**
      * @return array
      */
     public function getVotesForQuests(): array {
@@ -749,7 +816,21 @@ class Game_model extends MY_Model
     /**
      *
      */
-    public function initVotesForTeams() {
+    public function initVotesForQuests() {
+
+        $this->arrVotesForQuests = [];
+        $this->load->model('votes/votequest_model', '_voteQuest');
+
+        $arrVotes = $this->db
+            ->select('*')
+            ->where('gameUid', $this->getGameUid())
+            ->get($this->_voteQuest->table)
+            ->result();
+
+        foreach ($arrVotes as $vote) {
+            $oVote = clone $this->_voteQuest;
+            $this->arrVotesForQuests[$oVote->getQuest()] = $oVote->init(false, $vote);
+        }
 
     }
 
@@ -765,6 +846,27 @@ class Game_model extends MY_Model
         }
 
         return $this->arrVotesForTeams;
+    }
+
+    /**
+     *
+     */
+    public function initVotesForTeams() {
+
+        $this->arrVotesForTeams = [];
+        $this->load->model('votes/voteteam_model', '_voteTeam');
+
+        $arrVotes = $this->db
+            ->select('*')
+            ->where('gameUid', $this->getGameUid())
+            ->get($this->_history->table)
+            ->result();
+
+        foreach ($arrVotes as $vote) {
+            $oVote = clone $this->_voteTeam;
+            $this->arrVotesForTeams[$oVote->getQuest()][$oVote->getTeam()] = $oVote->init(false, $vote);
+        }
+
     }
 
 }
