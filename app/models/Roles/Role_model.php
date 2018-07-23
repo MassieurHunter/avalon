@@ -35,11 +35,14 @@ class Role_model extends MY_Model
      * @var array
      */
     public $basics = [
-        'roleUid'     => 'getRoleUid',
-        'name'        => 'getName',
-        'description' => 'getDescription',
-        'model'       => 'getModel',
-        'isGood'      => 'isGood',
+        'roleUid'          => 'getRoleUid',
+        'name'             => 'getName',
+        'description'      => 'getDescription',
+        'model'            => 'getModel',
+        'isGood'           => 'isGood',
+        'isSeenByEvil'     => 'isSeenByEvil',
+        'isSeenByPerceval' => 'isSeenByPerceval',
+        'isSeenByMerlin'   => 'isSeenByMerlin',
     ];
     /**
      * @var int
@@ -226,7 +229,7 @@ class Role_model extends MY_Model
     /**
      * @return string
      */
-    public function getTeam() : string {
+    public function getTeam(): string {
         return $this->isGood() ? self::TEAM_GOOD : self::TEAM_EVIL;
     }
 

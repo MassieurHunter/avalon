@@ -46,44 +46,9 @@ export default class GameModel extends BaseModel {
 
 	}
 
-	getRolesForRunning() {
-
-		return this.get('rolesForRunning');
-
-	}
-
-	setProgress(progress) {
-		this.set('progress', progress)
-	}
-
-	getProgress() {
-		return this.get('progress', 0);
-	}
-
-	setCurrentRoleName(currentRoleName) {
-		this.set('currentRoleName', currentRoleName)
-	}
-
-	getCurrentRoleName() {
-		return this.get('currentRoleName', '');
-	}
-
 	getRolesModelForCasting() {
 
 		let roles = this.getRolesForCasting();
-		let rolesModel = [];
-
-		for (let role of roles) {
-			rolesModel.push(new RoleModel(role))
-		}
-
-		return rolesModel;
-
-	}
-
-	getRolesModelForRunning() {
-
-		let roles = this.getRolesForRunning();
 		let rolesModel = [];
 
 		for (let role of roles) {
@@ -165,14 +130,6 @@ export default class GameModel extends BaseModel {
 			Lang.getLine('casted_roles') + rolesListForCasting.substr(0, rolesListForCasting.length - 2)
 		);
 
-		let rolesForRunningBlock = new ABuilder(
-			'div',
-			{
-				'class': ''
-			},
-			Lang.getLine('roles_running_order') + rolesListForRunning.substr(0, rolesListForRunning.length - 2)
-		);
-
 		let RoleAlertBlock = new ABuilder(
 			'div',
 			{
@@ -180,49 +137,11 @@ export default class GameModel extends BaseModel {
 			},
 			[
 				rolesForCastingBlock,
-				rolesForRunningBlock
 			]
 		);
 
 		$('.waiting-for-start').remove();
 		$('.roles-block').append(RoleAlertBlock);
-
-	}
-
-	displayProgress() {
-
-
-		let roleName = new ABuilder(
-			'h4',
-			{
-				'class': 'progress-role-name text-center'
-			},
-			this.getLangModel().getLine('current turn')
-			+ ' '
-			+ this.getCurrentRoleName()
-		);
-
-
-		let progressBar = new ABuilder(
-			'div',
-			{'class': 'progress'},
-			new ABuilder(
-				'div',
-				{
-					'class': 'progress-bar progress-bar-striped progress-bar-animated',
-					'role': 'progressbar',
-					'aria-valuemin': 0,
-					'aria-valuemax': 100,
-					'aria-valuenow': this.getProgress(),
-					'style': 'width:' + this.getProgress() + '%'
-				},
-			)
-		);
-
-		$('.game-progress')
-			.html('')
-			.append(roleName)
-			.append(progressBar);
 
 	}
 

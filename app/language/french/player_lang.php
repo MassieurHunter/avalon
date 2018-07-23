@@ -8,6 +8,3 @@ $lang['voted_for'] = "Vous avez voté pour";
 $lang['voted_against'] = "Vous avez voté contre";
 $lang['cancel_vote'] = 'Annuler votre vote';
 $lang['players_list'] = 'Liste des joueurs: ';
-$lang['player_killed'] = '*player_name* a été tué(e)';
-$lang['player_was_role'] = '*player_name* était *player_role*';
-$lang['player_is_role'] = '*player_name* est *player_role*';
